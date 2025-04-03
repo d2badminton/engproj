@@ -14,8 +14,6 @@
             color: #e0e0e0;
             margin: 0;
             padding: 0;
-            overflow: hidden;
-            position: relative;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 0%; }
@@ -29,8 +27,6 @@
             border-radius: 20px;
             max-width: 800px;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-            position: relative;
-            z-index: 10;
         }
         h1 {
             font-size: 2.5em;
@@ -107,18 +103,6 @@
             border-radius: 15px;
             box-shadow: 0 0 15px #ffcc66;
         }
-        /* Flying Background Images */
-        .floating-image {
-            position: absolute;
-            opacity: 0.3;
-            pointer-events: none;
-            animation: floatAcross 10s linear infinite;
-            z-index: 5;
-        }
-        @keyframes floatAcross {
-            0% { transform: translateX(-100vw) translateY(0); }
-            100% { transform: translateX(100vw) translateY(calc(50vh - 50%)); }
-        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -132,12 +116,6 @@
         </div>
         <div class="story" id="storyText"></div>
     </div>
-
-    <!-- Floating Background Images -->
-    <img src="https://cdn.pixabay.com/photo/2017/08/07/14/02/futuristic-2600139_1280.jpg" class="floating-image" style="width: 150px; top: 10%; animation-delay: 0s;">
-    <img src="https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_1280.jpg" class="floating-image" style="width: 100px; top: 30%; animation-delay: 2s;">
-    <img src="https://cdn.pixabay.com/photo/2017/08/30/01/05/milky-way-2695569_1280.jpg" class="floating-image" style="width: 120px; top: 50%; animation-delay: 4s;">
-    <img src="https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_1280.jpg" class="floating-image" style="width: 130px; top: 70%; animation-delay: 6s;">
 
     <script>
         const scenarios = [
