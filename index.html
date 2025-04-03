@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brave New World - Interactive Odyssey</title>
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #1e1e2f, #2a4066, #4a2c5f);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+        .container {
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(20, 20, 40, 0.9);
+            border-radius: 20px;
+            max-width: 800px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+        }
+        .question {
+            font-size: 1.6em;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in;
+            color: #ff66cc;
+        }
+        button {
+            margin: 15px;
+            padding: 15px 30px;
+            font-size: 1.3em;
+            border: 2px solid #00ffcc;
+            border-radius: 10px;
+            background: #1a1a3d;
+            color: #00ffcc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background: #00ffcc;
+            color: #1a1a3d;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+        .correct-answer {
+            animation: correctPulse 1s ease;
+            background: #00ff00;
+            color: #1a1a3d;
+            box-shadow: 0 0 20px #00ff00;
+        }
+        .wrong-answer {
+            animation: wrongShake 0.5s ease;
+            background: #ff3333;
+            color: #fff;
+            box-shadow: 0 0 20px #ff3333;
+        }
+        .story {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #66ffcc;
+            display: none;
+            animation: slideIn 1s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        @keyframes wrongShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
+            75% { transform: translateX(-10px); }
+            100% { transform: translateX(0); }
+        }
+        .summary {
+            font-size: 1.1em;
+            color: #ffcc66;
+            text-align: left;
+            padding: 20px;
+            background: rgba(40, 40, 80, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 0 15px #ffcc66;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Brave New World - Interactive Odyssey</h1>
+        <div id="questionContainer">
+            <p class="question" id="questionText"></p>
+            <button onclick="answerQuestion(0)" id="option0"></button>
+            <button onclick="answerQuestion(1)" id="option1"></button>
+        </div>
+        <div class="story" id="storyText"></div>
+    </div>
+
+    <script>
+        const scenarios = [
+            { question: "Everyone takes a happiness pill daily. Do you take it?", options: ["Yes, it keeps life simple", "No, I want real emotions"], match: 0, story: "Soma ensures stability in this controlled society." },
+            { question: "Society hides the truth. Do you dig deeper?", options: ["Yes, truth matters", "No, peace is better"], match: 0, story: "John seeks reality beyond the lies." },
+            { question: "A friend thinks differently. Report them?", options: ["No, freedom of thought", "Yes, it’s risky"], match: 0, story: "Dissenters face exile in this world." },
+            { question: "Your friend is exiled. Join them?", options: ["Yes, loyalty first", "No, safety first"], match: 0, story: "Bernard chooses exile for freedom." },
+            { question: "A glitch reveals forbidden history. Explore it?", options: ["Yes, knowledge is power", "No, it’s dangerous"], match: 0, story: "History is erased to maintain order." },
+            { question: "You’re offered a perfect mate. Accept?", options: ["Yes, it’s efficient", "No, I want choice"], match: 1, story: "Relationships are engineered for harmony." },
+            { question: "Children are grown in labs. Support this?", options: ["Yes, it’s progress", "No, it’s unnatural"], match: 1, story: "Natural birth is obsolete here." },
+            { question: "You find an old book. Keep it?", options: ["Yes, it’s a treasure", "No, it’s banned"], match: 0, story: "Books threaten the system’s control." },
+            { question: "Emotions are outlawed. Comply?", options: ["No, I need to feel", "Yes, it’s safer"], match: 0, story: "Feelings disrupt the World State." },
+            { question: "You’re assigned a caste. Rebel?", options: ["Yes, I choose my path", "No, it’s my role"], match: 0, story: "Caste systems lock people in place." },
+            { question: "A leader offers eternal peace. Trust them?", options: ["No, peace has a price", "Yes, it’s ideal"], match: 0, story: "Peace comes through total control." },
+            { question: "You see a flaw in society. Speak up?", options: ["Yes, change is needed", "No, it’s pointless"], match: 0, story: "Silence preserves the status quo." },
+            { question: "Pleasure is mandatory. Resist?", options: ["Yes, I want depth", "No, it’s fun"], match: 0, story: "Pleasure numbs the mind." },
+            { question: "You’re monitored 24/7. Fight it?", options: ["Yes, privacy matters", "No, it’s normal"], match: 0, story: "Surveillance ensures obedience." },
+            { question: "A rebel offers escape. Join them?", options: ["Yes, freedom calls", "No, it’s too risky"], match: 0, story: "Rebels seek the wild beyond." },
+            { question: "Art is banned. Create it anyway?", options: ["Yes, it’s my soul", "No, it’s illegal"], match: 0, story: "Art stirs dangerous thoughts." },
+            { question: "You’re given a perfect job. Refuse it?", options: ["Yes, I want passion", "No, it’s secure"], match: 0, story: "Jobs are assigned, not chosen." },
+            { question: "Love is called obsolete. Seek it?", options: ["Yes, it’s human", "No, it’s messy"], match: 0, story: "Love threatens stability." },
+            { question: "A drug boosts productivity. Take it?", options: ["No, I’ll manage", "Yes, it’s efficient"], match: 0, story: "Drugs replace natural effort." },
+            { question: "You’re told history is irrelevant. Study it?", options: ["Yes, it shapes us", "No, it’s gone"], match: 0, story: "History is buried to control the present." },
+            { question: "Conformity is praised. Stand out?", options: ["Yes, I’m unique", "No, I’ll blend"], match: 0, story: "Uniformity is the goal here." },
+            { question: "A friend rejects Soma. Support them?", options: ["Yes, they’re brave", "No, they’re foolish"], match: 0, story: "Soma refusal is rare and bold." },
+            { question: "You’re offered power. Take it?", options: ["No, it corrupts", "Yes, it’s tempting"], match: 0, story: "Power serves the system, not you." },
+            { question: "Nature is replaced by tech. Restore it?", options: ["Yes, it’s vital", "No, tech is better"], match: 0, story: "Nature is a forgotten relic." },
+            { question: "You’re cloned. Accept it?", options: ["No, I’m one of a kind", "Yes, it’s efficient"], match: 0, story: "Cloning ensures sameness." },
+            { question: "A riot breaks out. Join it?", options: ["Yes, chaos is truth", "No, order is best"], match: 0, story: "Riots are crushed swiftly." },
+            { question: "You’re told to forget pain. Remember it?", options: ["Yes, it’s real", "No, it’s useless"], match: 0, story: "Pain is erased for control." },
+            { question: "A machine predicts your life. Defy it?", options: ["Yes, I write my fate", "No, it’s accurate"], match: 0, story: "Predestination rules here." },
+            { question: "You find a free thinker. Protect them?", options: ["Yes, they’re rare", "No, they’re trouble"], match: 0, story: "Free thinkers are threats." },
+            { question: "Sleep teaches obedience. Resist it?", options: ["Yes, I’ll stay awake", "No, it’s soothing"], match: 0, story: "Hypnopaedia molds minds." },
+            { question: "You’re offered luxury. Reject it?", options: ["Yes, it’s a cage", "No, it’s comfort"], match: 0, story: "Luxury buys loyalty." },
+            { question: "A child questions rules. Encourage them?", options: ["Yes, curiosity is good", "No, it’s dangerous"], match: 0, story: "Children are conditioned early." },
+            { question: "You’re told to hate the past. Love it?", options: ["Yes, it’s ours", "No, it’s irrelevant"], match: 0, story: "The past is a forbidden memory." },
+            { question: "A leader demands worship. Refuse?", options: ["Yes, no one’s a god", "No, it’s expected"], match: 0, story: "Leaders are revered blindly." },
+            { question: "You’re given fake memories. Reject them?", options: ["Yes, truth matters", "No, they’re fine"], match: 0, story: "Memories are fabricated here." },
+            { question: "A friend seeks the wild. Follow?", options: ["Yes, it’s freedom", "No, it’s savage"], match: 0, story: "The wild is untamed and real." },
+            { question: "You’re offered eternal youth. Decline?", options: ["Yes, aging is natural", "No, it’s perfect"], match: 0, story: "Youth trades depth for time." },
+            { question: "A law bans questions. Break it?", options: ["Yes, I’ll ask", "No, I’ll obey"], match: 0, story: "Questions unravel control." },
+            { question: "You’re told to forget family. Remember?", options: ["Yes, it’s my root", "No, it’s obsolete"], match: 0, story: "Family is replaced by the state." },
+            { question: "A screen controls your day. Smash it?", options: ["Yes, I’ll live free", "No, it’s useful"], match: 0, story: "Screens dictate life here." },
+            { question: "You’re offered bliss. Seek pain?", options: ["Yes, it’s real", "No, bliss is better"], match: 0, story: "Pain defines humanity." },
+            { question: "A friend defies caste. Back them?", options: ["Yes, they’re right", "No, it’s chaos"], match: 0, story: "Caste defiance is rare." },
+            { question: "You’re told to worship tech. Doubt it?", options: ["Yes, it’s just tools", "No, it’s divine"], match: 0, story: "Tech is the new god." },
+            { question: "A voice offers truth. Listen?", options: ["Yes, I need it", "No, it’s a trap"], match: 0, story: "Truth is a rare whisper." },
+            { question: "You’re given a perfect life. Refuse?", options: ["Yes, I’ll forge my own", "No, it’s ideal"], match: 0, story: "Perfection is a lie." },
+            { question: "A rebel dies for freedom. Honor them?", options: ["Yes, they’re a hero", "No, they’re a fool"], match: 0, story: "Rebels inspire change." },
+            { question: "You’re told to forget art. Paint?", options: ["Yes, it’s my voice", "No, it’s banned"], match: 0, story: "Art is a lost rebellion." },
+            { question: "A drug erases fear. Skip it?", options: ["Yes, fear teaches", "No, it’s relief"], match: 0, story: "Fear is purged for calm." },
+            { question: "You’re offered control. Reject it?", options: ["Yes, it’s a burden", "No, it’s power"], match: 0, story: "Control chains the soul." },
+            { question: "The system collapses. Rebuild it?", options: ["No, let it die", "Yes, it’s order"], match: 0, story: "Collapse offers a new dawn." }
+        ];
+
+        let currentScenario = 0;
+
+        function showQuestion() {
+            let q = scenarios[currentScenario];
+            document.getElementById('questionText').textContent = q.question;
+            document.getElementById('option0').textContent = q.options[0];
+            document.getElementById('option1').textContent = q.options[1];
+            document.getElementById('option0').classList.remove('correct-answer', 'wrong-answer');
+            document.getElementById('option1').classList.remove('correct-answer', 'wrong-answer');
+            document.getElementById('storyText').style.display = 'none';
+        }
+
+        function answerQuestion(choice) {
+            let q = scenarios[currentScenario];
+            let selectedButton = document.getElementById(`option${choice}`);
+            let correctButton = document.getElementById(`option${q.match}`);
+
+            if (choice === q.match) {
+                selectedButton.classList.add('correct-answer');
+                document.getElementById('storyText').textContent = q.story;
+                document.getElementById('storyText').style.display = 'block';
+                currentScenario++;
+                if (currentScenario < scenarios.length) {
+                    setTimeout(showQuestion, 2000);
+                } else {
+                    showSummary();
+                }
+            } else {
+                selectedButton.classList.add('wrong-answer');
+                setTimeout(() => {
+                    selectedButton.classList.remove('wrong-answer');
+                    alert("Wrong choice! Click the correct one to see what happens next.");
+                }, 500);
+            }
+        }
+
+        function showSummary() {
+            document.getElementById('questionContainer').innerHTML = `
+                <h2 class="summary">Journey Complete!</h2>
+                <p class="summary">
+                    In Aldous Huxley's Brave New World, a futuristic society prioritizes stability over individuality. Citizens consume Soma, a drug erasing pain and doubt, ensuring a shallow happiness. John, raised outside this system, challenges its core by valuing raw emotion and truth over artificial peace. Bernard and Lenina navigate this world of engineered humans and suppressed history, revealing cracks in the facade. As John resists conformity, he exposes the cost of a utopia: the loss of freedom, love, and authentic experience. Exile becomes his escape, a bittersweet liberation from a world that fears change. This tale warns of a future where technology and control strip humanity of its essence, leaving a hollow shell of contentment. True happiness, it suggests, lies not in engineered bliss but in the messy, unpredictable beauty of real life—a lesson echoing through every choice you made.
+                </p>
+            `;
+        }
+
+        showQuestion();
+    </script>
+</body>
+</html>
