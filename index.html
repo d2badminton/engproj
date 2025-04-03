@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brave New World - Interactive Odyssey</title>
+    <title>Situational Questions in Point of View With Respect To Story Brave New World - Interactive Odyssey</title>
     <style>
         body {
             font-family: 'Orbitron', sans-serif;
@@ -14,6 +14,7 @@
             color: #e0e0e0;
             margin: 0;
             padding: 0;
+            overflow: hidden;
         }
         @keyframes gradientBG {
             0% { background-position: 0% 0%; }
@@ -27,11 +28,19 @@
             border-radius: 20px;
             max-width: 800px;
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+            position: relative;
+            z-index: 10;
+            display: none; /* Hidden initially */
         }
         h1 {
             font-size: 2.5em;
             color: #00ffcc;
             text-shadow: 0 0 10px #00ffcc;
+        }
+        .contributors {
+            font-size: 1em;
+            color: #66ffcc;
+            margin-top: 20px;
         }
         .question {
             font-size: 1.6em;
@@ -103,18 +112,68 @@
             border-radius: 15px;
             box-shadow: 0 0 15px #ffcc66;
         }
+        /* Intro Styles */
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(20, 20, 40, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 20;
+            color: #00ffcc;
+            text-shadow: 0 0 10px #00ffcc;
+            cursor: pointer;
+        }
+        #intro h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        #intro p {
+            font-size: 1.2em;
+            color: #66ffcc;
+        }
+        .fade-out {
+            animation: fadeOut 1s ease forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; display: none; }
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Intro Section -->
+    <div id="intro" onclick="startGame()">
+        <h2>Situational Questions in Point of View With Respect To Story Brave New World - Interactive Odyssey</h2>
+        <p>From M2 Section</p>
+        <p>Click Anywhere to Start Answering</p>
+    </div>
+
+    <!-- Main Content -->
     <div class="container">
-        <h1>Brave New World - Interactive Odyssey</h1>
+        <h1>Situational Questions in Point of View With Respect To Story Brave New World - Interactive Odyssey</h1>
         <div id="questionContainer">
             <p class="question" id="questionText"></p>
             <button onclick="answerQuestion(0)" id="option0"></button>
             <button onclick="answerQuestion(1)" id="option1"></button>
         </div>
         <div class="story" id="storyText"></div>
+        <div class="contributors">
+            <p>Faculty In-Charge: Dr. Sulagna Mohanty</p>
+            <p>Contributors:</p>
+            <p>Anirudh Ramakrishnan (RA2411003012138)</p>
+            <p>Bodireddy Kiran (RA2411003012152)</p>
+            <p>G. Sai Santosh Preetam (RA2411003012120)</p>
+            <p>Hari Tyagan (RA2411003012135)</p>
+            <p>Koushigan (RA2411003012117)</p>
+            <p>Raman Kumar (RA2411003012125)</p>
+        </div>
     </div>
 
     <script>
@@ -173,6 +232,16 @@
 
         let currentScenario = 0;
 
+        function startGame() {
+            const intro = document.getElementById('intro');
+            intro.classList.add('fade-out');
+            setTimeout(() => {
+                intro.style.display = 'none';
+                document.querySelector('.container').style.display = 'block';
+                showQuestion();
+            }, 1000); // Matches fadeOut animation duration
+        }
+
         function showQuestion() {
             let q = scenarios[currentScenario];
             document.getElementById('questionText').textContent = q.question;
@@ -215,8 +284,6 @@
                 </p>
             `;
         }
-
-        showQuestion();
     </script>
 </body>
 </html>
